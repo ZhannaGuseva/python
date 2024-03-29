@@ -69,7 +69,7 @@ pipeline {
             steps {
                 container('docker') {
                     sh """
-				        echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin
+			echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin
                         docker push zhannaguseva/\${REPOSITORY_NAME}-python-docker-build:\${VERSION}
                     """
                 }
