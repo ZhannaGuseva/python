@@ -14,7 +14,8 @@ pipeline {
                       command:
                       - cat
                       tty: true
-        '''
+            '''
+	    podRetention: '15'
         }
     }
 
