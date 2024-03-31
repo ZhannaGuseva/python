@@ -46,7 +46,7 @@ pipeline {
             }
         }
 		
-		stage('Linting Dockerfile') {
+	stage('Linting Dockerfile') {
             steps {
                 container('docker') {
                   sh 'docker run --rm -i hadolint/hadolint:2.10.0 < Dockerfile | tee -a docker_lint.txt'
@@ -65,7 +65,7 @@ pipeline {
             }
         }
 		
-		stage('Push artefact') {
+	stage('Push artefact') {
             steps {
                 container('docker') {
                     sh """
