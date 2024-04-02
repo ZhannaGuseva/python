@@ -1,0 +1,8 @@
+replicaCount: 1
+image:
+  repository: zhannaguseva/python-python-docker-build
+  tag: "latest"  # Update this with the specific version if needed
+  pullPolicy: IfNotPresent
+service:
+  type: ClusterIP
+  port: 80
