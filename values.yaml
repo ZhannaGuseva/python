@@ -1,7 +1,10 @@
 replicaCount: 1
+namespace:
+  name: dev
+
 image:
   repository: zhannaguseva/python-python-docker-build
-  tag: "latest"  # Update this with the specific version if needed
+  tag: 2024-03-14  
   pullPolicy: IfNotPresent
 service:
   type: ClusterIP
