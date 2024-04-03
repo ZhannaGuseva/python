@@ -1,0 +1,7 @@
+apiVersion: v1
+name: python-app
+description: A Helm chart for deploying a simple Python application
+version: 0.1.0
+maintainers:
+- name: Zhanna Husieva
+  email: zhannaguseva2020@gmail.com
