@@ -1,0 +1,8 @@
+namespace:
+  name: dev
+image:
+  repository: zhannaguseva/python
+  tag: 2024-04-16
+replicaCount: 1
+service:
+  port: 80
