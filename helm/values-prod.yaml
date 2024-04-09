@@ -1,3 +1,4 @@
+appName: python-app
 namespace:
   name: prod
 image:
