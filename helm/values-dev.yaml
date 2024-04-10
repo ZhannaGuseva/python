@@ -1,8 +1,8 @@
-appName: python-app
+appName: python-app-dev
 namespace:
   name: dev
 image:
-  repository: zhannaguseva/python
+  repository: zhannaguseva/python-dev
   tag: 2024-04-16
 replicaCount: 1
 service:
