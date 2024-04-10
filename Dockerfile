@@ -9,5 +9,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY main.py .
 
 # Define container entry point (could also work with CMD python main.py)
-ENTRYPOINT ["python", "main.py"]
-CMD ["tail", "-f", "/dev/null"]
+ENTRYPOINT ["sh", "-c", "python main.py && sleep infinity"]
