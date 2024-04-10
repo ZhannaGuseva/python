@@ -23,7 +23,6 @@ spec:
       containers:
         - name: python-app
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          command: ["sleep", "infinity"]
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
