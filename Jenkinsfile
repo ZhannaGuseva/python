@@ -81,8 +81,8 @@ podTemplate(label: 'mypod', serviceAccount: 'jenkins', containers: [
         stage('Package Helm Chart') {
             container('helm') {
                 withCredentials([usernamePassword(credentialsId: 'dockerhubcredentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                sh "sed -i 's;${HELM_IMAGE_TAG};${VERSION};' ${WORKSPACE}/helm/values.yaml"
-                sh "cat ${WORKSPACE}/helm/values.yaml"
+                sh "sed -i 's;${HELM_IMAGE_TAG};${VERSION};' ${WORKSPACE}/helm/values-dev.yaml"
+                sh "cat ${WORKSPACE}/helm/values-dev.yaml"
                 
                 sh "helm package ${HELM_CHART_DIRECTORY}"
                 // Check if the package file exists
@@ -101,10 +101,10 @@ podTemplate(label: 'mypod', serviceAccount: 'jenkins', containers: [
                     def existingRelease = sh(returnStdout: true, script: "helm list -q | grep '^${HELM_APP_NAME}'").trim()
                     if (existingRelease.isEmpty()) {
                 // If the release doesn't exist, install it
-                        sh "helm install ${HELM_APP_NAME} ${HELM_REGISTRY}"
+                        sh "helm install ${HELM_APP_NAME} ${HELM_REGISTRY} -n dev -f values-dev.yaml"
                     } else {
                 // If the release exists, upgrade it
-                        sh "helm upgrade ${HELM_APP_NAME} ${HELM_REGISTRY}"
+                        sh "helm upgrade ${HELM_APP_NAME} ${HELM_REGISTRY} -n dev -f values-dev.yaml"
                     }
                 }
             }
