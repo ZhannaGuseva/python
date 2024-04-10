@@ -42,8 +42,8 @@ podTemplate(label: 'mypod', serviceAccount: 'jenkins', containers: [
         def REPOSITORY_URI = "zhannaguseva/python"
         def VERSION = "${DEV_YEAR}-${DEV_MONTH}-${BUILD_NUMBER}"
         def HELM_APP_NAME = "python-app"
-        def HELM_CHART_DIRECTORY = "/home/jenkins/agent/workspace/test2_helm/helm"
-        def HELM_CHART_REPO = "/home/jenkins/agent/workspace/test2_helm"
+        def HELM_CHART_DIRECTORY = "/home/jenkins/agent/workspace/test3_helm/helm"
+        def HELM_CHART_REPO = "/home/jenkins/agent/workspace/test3_helm"
         def HELM_IMAGE_TAG = "2024-04-16"
         def HELM_REGISTRY = "oci://registry-1.docker.io/zhannaguseva/python-app"
         
@@ -94,7 +94,7 @@ podTemplate(label: 'mypod', serviceAccount: 'jenkins', containers: [
             }
         }
         
-        stage('Deploy Helm Chart and Check running containers') {
+        stage('Deploy Helm Chart for dev namespace and Check running containers') {
             container('helm') {
                 script {
                 // Check if the release already exists
@@ -110,7 +110,7 @@ podTemplate(label: 'mypod', serviceAccount: 'jenkins', containers: [
             }
                 
             container('kubectl') { 
-                sh 'kubectl get pods -n jenkins'  
+                sh 'kubectl get pods -n dev'  
             }
         }
         
