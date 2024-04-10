@@ -10,4 +10,4 @@ COPY main.py .
 
 # Define container entry point (could also work with CMD python main.py)
 ENTRYPOINT ["python", "main.py"]
-CMD [ "sleep", "infinity" ]
+CMD ["tail", "-f", "/dev/null"]
