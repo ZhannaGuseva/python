@@ -1,4 +1,4 @@
-appName: python-app
+appName: python-app-prod
 namespace:
   name: prod
 image:
