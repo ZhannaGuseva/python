@@ -30,7 +30,11 @@ podTemplate(label: 'mypod', serviceAccount: 'jenkins', containers: [
       command: 'cat'
     )
   ],
-
+  properties([
+      pipelineTriggers([
+          pollSCM(''H/2 * * * *'')
+    ] )
+  ])
   volumes: [
     hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock'),
     hostPathVolume(mountPath: '/usr/local/bin/helm', hostPath: '/usr/local/bin/helm')
