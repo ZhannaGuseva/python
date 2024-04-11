@@ -3,7 +3,7 @@ namespace:
   name: prod
 image:
   repository: zhannaguseva/python
-  tag: 2024-04-16
+  tag: 2024-04-38
 replicaCount: 3
 service:
   port: 80
