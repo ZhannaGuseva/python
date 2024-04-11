@@ -22,7 +22,7 @@ podTemplate(label: 'mypod', serviceAccount: 'jenkins', containers: [
     containerTemplate(
       name: 'helm', 
       image: 'alpine/helm:3.8.0', 
-      resourceRequestCpu: '100m',
+      resourceRequestCpu: '200m',
       resourceLimitCpu: '300m',
       resourceRequestMemory: '300Mi',
       resourceLimitMemory: '500Mi',
@@ -30,11 +30,7 @@ podTemplate(label: 'mypod', serviceAccount: 'jenkins', containers: [
       command: 'cat'
     )
   ],
-  properties([
-      pipelineTriggers([
-          pollSCM(''H/2 * * * *'')
-    ] )
-  ])
+  
   volumes: [
     hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock'),
     hostPathVolume(mountPath: '/usr/local/bin/helm', hostPath: '/usr/local/bin/helm')
@@ -42,6 +38,8 @@ podTemplate(label: 'mypod', serviceAccount: 'jenkins', containers: [
   ) {
     node('mypod') {
         
+        def ENVIRONMENT = env.ENVIRONMENT ?: 'dev'
+        def NAMESPACE_DEPLOY = ENVIRONMENT == 'dev' ? 'dev' : 'prod'
         def GIT_URL = "https://github.com/ZhannaGuseva/python.git"
         def REPOSITORY_URI = "zhannaguseva/python"
         def VERSION = "${DEV_YEAR}-${DEV_MONTH}-${BUILD_NUMBER}"
@@ -50,6 +48,8 @@ podTemplate(label: 'mypod', serviceAccount: 'jenkins', containers: [
         def HELM_CHART_REPO = "/home/jenkins/agent/workspace/test3_helm"
         def HELM_IMAGE_TAG = "2024-04-16"
         def HELM_REGISTRY = "oci://registry-1.docker.io/zhannaguseva/python-app"
+        
+        properties([pipelineTriggers([pollSCM('H/2 * * * *')])])
         
         stage('Get latest version of code') {
             script {
@@ -101,15 +101,7 @@ podTemplate(label: 'mypod', serviceAccount: 'jenkins', containers: [
         stage('Deploy Helm Chart for dev namespace and Check running containers') {
             container('helm') {
                 script {
-                // Check if the release already exists
-                    def existingRelease = sh(returnStdout: true, script: "helm list -q | grep '^${HELM_APP_NAME}'").trim()
-                    if (existingRelease.isEmpty()) {
-                // If the release doesn't exist, install it
-                        sh "helm install ${HELM_APP_NAME} ${HELM_REGISTRY} -n dev -f values-dev.yaml"
-                    } else {
-                // If the release exists, upgrade it
-                        sh "helm upgrade ${HELM_APP_NAME} ${HELM_REGISTRY} -n dev -f values-dev.yaml"
-                    }
+                    sh "helm upgrade --install ${HELM_APP_NAME} oci://registry-1.docker.io/zhannaguseva/python-app --version 0.1.0 -n ${NAMESPACE_DEPLOY} --values ${WORKSPACE}/helm/values-dev.yaml"
                 }
             }
                 
