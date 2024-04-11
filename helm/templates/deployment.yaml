@@ -24,6 +24,9 @@ spec:
         - name: python-app
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          envFrom:
+          - secretRef:
+              name: dev-user                      
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}
